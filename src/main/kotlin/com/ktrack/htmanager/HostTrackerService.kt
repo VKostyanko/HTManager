@@ -1,14 +1,25 @@
 package com.ktrack.htmanager
 
+import com.google.gson.annotations.SerializedName
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 object HostTrackerService {
     val instance by lazy {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.host-tracker.com/")
+            .baseUrl("https://www.host-tracker.com/api/web/v1/")
             .addConverterFactory(GsonConverterFactory.create())
+            //.client(okHttpClient)
             .build()
 
         retrofit.create(HostTrackerService::class.java)
@@ -16,15 +27,21 @@ object HostTrackerService {
 
     interface HostTrackerService {
 
-        @POST("/api/web/v1/users/token")
-        fun getToken(login: String, password: String): UserToken
+        @POST("users/token")
+        fun getToken(
+            @Body userCredentials: UserCredentials = UserCredentials(
+                login = "offerwall",
+                password = "asd32redDQwd"
+            )
+        ): Call<UserToken>
+
+        @POST("tasks/http")
+        fun createHttpTask(
+            @Header("Authorization") token: String,
+            @Body task: Task
+        ): Call<Task>
     }
 }
 
-data class UserToken(
-    val token: String,
-    val expirationTime: String,
-    val expirationUnixTim: Long,
-)
 
 
