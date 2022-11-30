@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class HtManagerApplication
 
 fun main(args: Array<String>) {
-    runApplication<HtManagerApplication>(*args)
+	runApplication<HtManagerApplication>(*args)
 }
