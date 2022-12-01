@@ -6,9 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 object HostTrackerService {
     val instance by lazy {
@@ -39,6 +37,19 @@ object HostTrackerService {
         fun createHttpTask(
             @Header("Authorization") token: String,
             @Body task: Task
+        ): Call<Task>
+
+        @PUT("tasks/{TASK_ID}")
+        fun updateHttpTask(
+            @Header("Authorization") token: String,
+            @Path("TASK_ID") id: String,
+            @Body task: Task
+        ): Call<Task>
+
+        @DELETE("tasks/{TASK_ID}")
+        fun deleteHttpTask(
+            @Header("Authorization") token: String,
+            @Path("TASK_ID") id: String
         ): Call<Task>
     }
 }

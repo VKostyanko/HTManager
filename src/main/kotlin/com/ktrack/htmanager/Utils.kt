@@ -23,6 +23,24 @@ fun createHttpTask(task: Task): Task {
     ).execute().body() ?: throw Exception("Same task already exists")
 }
 
+fun deleteHttpTask(taskId: String): Task {
+    val token = "bearer " + getToken()
+    return HostTrackerService.instance.deleteHttpTask(
+        token = token,
+        id = taskId
+    ).execute().body()
+        ?: throw Exception("No task with this id")
+}
+
+fun updateHttpTask(task: Task) : Task{
+    val token = "bearer " + getToken()
+    return HostTrackerService.instance.updateHttpTask(
+        token = token,
+        id = task.id!!,
+        task = task
+    ).execute().body() ?: throw Exception("No task with this id")
+}
+
 fun main() {
     val testSub = Subscriptions(
         alertTypes = arrayListOf("Up", "Down"),
@@ -41,5 +59,16 @@ fun main() {
         subscriptions = arrayListOf(testSub)
     )
 
-    println( createHttpTask(testTask) )
+    val test = createHttpTask(testTask)
+    println( test )
+
+    val updTestSub = Subscriptions(
+        alertTypes = arrayListOf("Down"),
+        taskIds = arrayListOf("Daily"),
+        contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
+    )
+
+    println( updateHttpTask(test.copy(subscriptions = arrayListOf(updTestSub))) )
+
+    //println( deleteHttpTask("de414404-cc70-ed11-9e59-00155d45084f") )
 }
