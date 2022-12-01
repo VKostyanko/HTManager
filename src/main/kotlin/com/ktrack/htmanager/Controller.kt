@@ -10,7 +10,18 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/")
 class Controller {
     @GetMapping("/")
-    fun hostTrackerPostback(): String {
+    fun test(): String {
         return "Hello world :("
     }
+
+    @PostMapping("/")
+    fun hostTrackerPostback(
+        @RequestBody test: Test
+    ): String {
+        return test.taskname
+    }
 }
+
+class Test(
+    val taskname: String
+)
