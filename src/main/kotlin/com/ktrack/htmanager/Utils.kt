@@ -23,6 +23,7 @@ fun createHttpTask(task: Task): Task {
     ).execute().body() ?: throw Exception("Same task already exists")
 }
 
+/*
 fun deleteHttpTask(taskId: String): Task {
     val token = "bearer " + getToken()
     return HostTrackerService.instance.deleteHttpTask(
