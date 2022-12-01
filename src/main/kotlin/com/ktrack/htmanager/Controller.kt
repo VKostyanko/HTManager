@@ -1,5 +1,6 @@
 package com.ktrack.htmanager
 
+import org.springframework.boot.jackson.JsonComponent
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,15 +17,15 @@ class Controller {
 
     @PostMapping("/")
     fun hostTrackerPostback(
-        @RequestBody test: Test
+        @RequestBody test: String
     ): String {
         println(test)
-        println(test.taskname)
+        //println(test.taskname)
 
-        return test.taskname
+        return test//.taskname
     }
 }
 
-class Test(
+data class Test(
     val taskname: String
 )
