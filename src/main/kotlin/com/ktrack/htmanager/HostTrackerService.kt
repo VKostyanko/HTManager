@@ -46,11 +46,11 @@ object HostTrackerService {
             @Body task: Task
         ): Call<Task>
 
-        @DELETE("tasks/{TASK_ID}")
+        @DELETE("tasks")
         fun deleteHttpTask(
             @Header("Authorization") token: String,
-            @Path("TASK_ID") id: String
-        ): Call<Task>
+            @Query("url") url: String
+        ): Call<List<Task>>
     }
 }
 

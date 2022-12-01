@@ -24,11 +24,11 @@ fun createHttpTask(task: Task): Task {
 }
 
 
-fun deleteHttpTask(taskId: String): Task {
+fun deleteHttpTask(url: String): List<Task> {
     val token = "bearer " + getToken()
     return HostTrackerService.instance.deleteHttpTask(
         token = token,
-        id = taskId
+        url = url
     ).execute().body()
         ?: throw Exception("No task with this id")
 }
@@ -42,9 +42,8 @@ fun updateHttpTask(task: Task) : Task{
     ).execute().body() ?: throw Exception("No task with this id")
 }
 
-/*
-fun main() {
-    val testSub = Subscriptions(
+/*fun main() {
+    *//*val testSub = Subscriptions(
         alertTypes = arrayListOf("Up", "Down"),
         taskIds = arrayListOf("Daily"),
         contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
@@ -61,16 +60,17 @@ fun main() {
         subscriptions = arrayListOf(testSub)
     )
 
-    val test.json = createHttpTask(testTask)
-    println( test.json )
+    val test = createHttpTask(testTask)
+    println( test )*//*
 
-    val updTestSub = Subscriptions(
+
+   *//* val updTestSub = Subscriptions(
         alertTypes = arrayListOf("Down"),
         taskIds = arrayListOf("Daily"),
         contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
     )
 
-    println( updateHttpTask(test.json.copy(subscriptions = arrayListOf(updTestSub))) )
+    println( updateHttpTask(test.copy(subscriptions = arrayListOf(updTestSub))) )*//*
 
-    //println( deleteHttpTask("de414404-cc70-ed11-9e59-00155d45084f") )
+    println( deleteHttpTask("https://www.google.com") )
 }*/

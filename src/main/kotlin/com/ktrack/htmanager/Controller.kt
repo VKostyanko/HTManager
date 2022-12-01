@@ -17,12 +17,12 @@ class Controller {
 
     @PostMapping("/")
     fun hostTrackerPostback(
-        @RequestBody test: String
+        @RequestBody test: Test
     ): String {
         println(test)
-        //println(test.taskname)
+        println(test.taskname)
 
-        return test//.taskname
+        return test.taskname
     }
 }
 
