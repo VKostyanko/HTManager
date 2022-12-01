@@ -18,6 +18,9 @@ class Controller {
     fun hostTrackerPostback(
         @RequestBody test: Test
     ): String {
+        println(test)
+        println(test.taskname)
+
         return test.taskname
     }
 }
