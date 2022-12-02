@@ -58,8 +58,8 @@ object HostTrackerService {
             @Query("url") url: String
         ): Call<List<Task>>
 
-        @GET("subscriptions")                //todo: delete with Models.Subscriptions
-        fun getHttpTaskSubscriptions(
+        @GET("subscriptions")
+        fun getHttpTaskSubscriptions(//todo: delete with Models.Subscriptions
             @Header("Authorization") token: String,
             @Query("taskId") taskId: String
         ): Call<List<Subscriptions>>

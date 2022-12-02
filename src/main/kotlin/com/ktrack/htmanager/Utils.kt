@@ -83,6 +83,8 @@ fun onPostbackDown(url: String): List<Task> {
 
     task = task.copy(enabled = false, name = "DISABLED " + task.name)
 
+    Thread.sleep(1000)
+
     return HostTrackerService.instance.updateHttpTask(
         token = token,
         url = task.url!!,
