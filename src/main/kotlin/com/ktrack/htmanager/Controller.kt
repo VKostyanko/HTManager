@@ -17,15 +17,21 @@ class Controller {
 
     @PostMapping("/")
     fun hostTrackerPostback(
-        @RequestBody test: Test
+        @RequestBody hostTrackerPostback: HostTrackerPostback
     ): String {
-        println(test)
-        println(test.taskname)
+        println(hostTrackerPostback)
 
-        return test.taskname
+        if (hostTrackerPostback.isUp)
+            onPostbackUp(hostTrackerPostback.taskUrl)
+        else{}
+            //todo: onPostbackDown   (disable app)
+
+
+        return hostTrackerPostback.taskUrl
     }
 }
 
-data class Test(
-    val taskname: String
+data class HostTrackerPostback(
+    val taskUrl: String,
+    val isUp: Boolean
 )

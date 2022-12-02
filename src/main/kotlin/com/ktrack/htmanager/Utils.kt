@@ -30,20 +30,42 @@ fun deleteHttpTask(url: String): List<Task> {
         token = token,
         url = url
     ).execute().body()
-        ?: throw Exception("No task with this id")
+        ?: throw Exception("No task with this url")
 }
 
-fun updateHttpTask(task: Task) : Task{
+fun onPostbackUp(url: String): List<Task> {
     val token = "bearer " + getToken()
+
+    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+
+    val updatedSubscriptions = task.subscriptions.map {
+        Subscriptions(
+            alertTypes = arrayListOf("Down"),
+            taskIds = it.taskIds,
+            contactIds = it.contactIds
+        )
+    } as ArrayList
+
+    task = task.copy(subscriptions = updatedSubscriptions)
+
     return HostTrackerService.instance.updateHttpTask(
         token = token,
-        id = task.id!!,
+        url = task.url!!,
         task = task
-    ).execute().body() ?: throw Exception("No task with this id")
+    ).execute().body() ?: throw Exception("No task with this url")
+}
+
+fun getHttpTask(url: String): List<Task> {
+    val token = "bearer " + getToken()
+    return HostTrackerService.instance.getHttpTask(
+        token = token,
+        url = url
+    ).execute().body()
+        ?: throw Exception("No task with this url")
 }
 
 /*fun main() {
-    *//*val testSub = Subscriptions(
+    val testSub = Subscriptions(
         alertTypes = arrayListOf("Up", "Down"),
         taskIds = arrayListOf("Daily"),
         contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
@@ -61,16 +83,16 @@ fun updateHttpTask(task: Task) : Task{
     )
 
     val test = createHttpTask(testTask)
-    println( test )*//*
+    println(test)
 
 
-   *//* val updTestSub = Subscriptions(
+    val updTestSub = Subscriptions(
         alertTypes = arrayListOf("Down"),
         taskIds = arrayListOf("Daily"),
         contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
     )
 
-    println( updateHttpTask(test.copy(subscriptions = arrayListOf(updTestSub))) )*//*
+    println(updateHttpTask(test.copy(url = "1111", subscriptions = arrayListOf(updTestSub))))
 
-    println( deleteHttpTask("https://www.google.com") )
+    //println( deleteHttpTask("https://www.google.com") )
 }*/
