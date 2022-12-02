@@ -15,16 +15,83 @@ fun getToken(): String = if (
     TokenHolder.token
 }
 
-fun createHttpTask(task: Task): Task {
+fun onAppCreate(
+    packageName: String,
+    huawei_id: String? = null,
+    keyword: String,
+    siteName: String
+): Task {
     val token = "bearer " + getToken()
+
+    val url = //if (huawei_id.isNullOrEmpty())
+        "https://play.google.com/store/apps/details?id=$packageName"
+//    else
+//        "https://appgallery.huawei.com/app/$huawei_id"
+
+    val task = Task(
+        url = url,
+        httpMethod = "Get",
+        timeout = 10000,
+        interval = 1, //todo: utochnit'
+        enabled = true,
+        name = siteName,
+        agentPools = arrayListOf("westeurope"),
+        subscriptions = arrayListOf(
+            Subscriptions(
+                alertTypes = arrayListOf("Up"),
+                taskIds = arrayListOf("Daily"),
+                contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
+            )
+        ),
+        keywords = arrayListOf(keyword),
+        ignoredStatuses = arrayListOf("408")
+    )
+
     return HostTrackerService.instance.createHttpTask(
         token = token,
         task = task
     ).execute().body() ?: throw Exception("Same task already exists")
 }
 
+fun onAppUpdate(
+    packageName: String,
+    keyword: String
+): List<Task> {
+    val token = "bearer " + getToken()
 
-fun deleteHttpTask(url: String): List<Task> {
+    val url = //"https://play.google.com/store/apps/details?id=$packageName"
+        "https://github.com/grigoriy322/HostTrackerTest/$packageName"
+    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+
+    Thread.sleep(1000)
+
+    task = task.copy(
+        keywords = arrayListOf(keyword),
+
+        //todo: delete
+        subscriptions = arrayListOf(
+            Subscriptions(
+                alertTypes = arrayListOf("Up"),
+                taskIds = arrayListOf("Daily"),
+                contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
+            )
+        )
+    //todo: -------
+
+    )
+
+    println("---------------" + task)
+
+    return HostTrackerService.instance.updateHttpTask(
+        token = token,
+        url = task.url!!,
+        task = task
+    ).execute().body() ?: throw Exception("No task with this url")
+}
+
+fun onAppDelete(
+    url: String // todo: url -> packageName
+): List<Task> {
     val token = "bearer " + getToken()
     return HostTrackerService.instance.deleteHttpTask(
         token = token,
@@ -101,39 +168,20 @@ fun onPostbackDown(url: String): List<Task> {
     }
 }*/
 
-/*
 fun main() {
 
 
-    println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
+    //println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
 
-
-
-    */
-/*val testSub = Subscriptions(
-        alertTypes = arrayListOf("Up"),
-        taskIds = arrayListOf("Daily"),
-        contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
+    println(
+        onAppUpdate(
+            packageName = "tree/main",
+            keyword = "HostTrackerTest 2.0",
+        )
     )
-
-    val testTask = Task(
-        url = "https://www.google.com1111",
-        httpMethod = "Get",
-        timeout = 10000,
-        interval = 60,
-        enabled = true,
-        name = "testing web api on private resourse",
-        agentPools = arrayListOf("westeurope"),
-        subscriptions = arrayListOf(testSub)
-    )
-    println(testTask)
-    val test = createHttpTask(testTask)
-    println(test)*//*
-
 
 
     //println(onPostbackUp(test.url!!))
 
     //println( deleteHttpTask("https://www.google.com") )
 }
-*/

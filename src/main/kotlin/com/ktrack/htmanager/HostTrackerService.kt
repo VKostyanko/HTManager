@@ -1,6 +1,5 @@
 package com.ktrack.htmanager
 
-import com.google.gson.annotations.SerializedName
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -16,7 +15,7 @@ object HostTrackerService {
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.host-tracker.com/api/web/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create()) //todo: replace to jackson converter
             //.client(okHttpClient)
             .build()
 
@@ -25,6 +24,7 @@ object HostTrackerService {
 
     interface HostTrackerService {
 
+        //todo getToken() in interceptor after error
         @POST("users/token")
         fun getToken(
             @Body userCredentials: UserCredentials = UserCredentials(
