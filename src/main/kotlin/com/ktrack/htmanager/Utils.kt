@@ -38,6 +38,8 @@ fun onPostbackUp(url: String): List<Task> {
 
     var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
 
+    task.subscriptions.forEach{ println(it) }
+
     val updatedSubscriptions = task.subscriptions.map {
         Subscriptions(
             alertTypes = arrayListOf("Down"),
@@ -48,11 +50,15 @@ fun onPostbackUp(url: String): List<Task> {
 
     task = task.copy(subscriptions = updatedSubscriptions)
 
+    task.subscriptions.forEach{ println(it) }
+
     return HostTrackerService.instance.updateHttpTask(
         token = token,
         url = task.url!!,
         task = task
-    ).execute().body() ?: throw Exception("No task with this url")
+    ).execute().body().also {
+        println(it?.first())
+    } ?: throw Exception("No task with this url")
 }
 
 fun getHttpTask(url: String): List<Task> {
