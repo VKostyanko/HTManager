@@ -37,10 +37,12 @@ fun onPostbackUp(url: String): List<Task> {
     val token = "bearer " + getToken()
 
     var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+    val subscriptions = HostTrackerService.instance
+        .getHttpTaskSubscriptions(token = token, taskId = task.id!!)
+        .execute()
+        .body() ?: throw Exception("No subscriptions with this id")
 
-    task.subscriptions.forEach{ println(it) }
-
-    val updatedSubscriptions = task.subscriptions.map {
+    val updatedSubscriptions = subscriptions.map {
         Subscriptions(
             alertTypes = arrayListOf("Down"),
             taskIds = it.taskIds,
@@ -48,17 +50,21 @@ fun onPostbackUp(url: String): List<Task> {
         )
     } as ArrayList
 
+    Thread.sleep(600)
+
+    /*val updatedSubscriptions = Subscriptions(
+        alertTypes = arrayListOf("Down"),
+        taskIds = arrayListOf("Daily")
+    )*/
+
     task = task.copy(subscriptions = updatedSubscriptions)
 
-    task.subscriptions.forEach{ println(it) }
 
     return HostTrackerService.instance.updateHttpTask(
         token = token,
         url = task.url!!,
         task = task
-    ).execute().body().also {
-        println(it?.first())
-    } ?: throw Exception("No task with this url")
+    ).execute().body() ?: throw Exception("No task with this url")
 }
 
 fun getHttpTask(url: String): List<Task> {
@@ -70,15 +76,46 @@ fun getHttpTask(url: String): List<Task> {
         ?: throw Exception("No task with this url")
 }
 
-/*fun main() {
-    val testSub = Subscriptions(
-        alertTypes = arrayListOf("Up", "Down"),
+fun onPostbackDown(url: String): List<Task> {
+    val token = "bearer " + getToken()
+
+    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+
+    task = task.copy(enabled = false, name = "DISABLED " + task.name)
+
+    return HostTrackerService.instance.updateHttpTask(
+        token = token,
+        url = task.url!!,
+        task = task
+    ).execute().body() ?: throw Exception("No task with this url")
+}
+
+/*fun retryRequestWrapper(count: Int, foo: () -> Unit){         todo
+    if (count==0) throw Exception("No task with this url")
+    try {
+        foo()
+    }catch (e:Exception){
+        retryRequestWrapper(count-1, foo)
+    }
+}*/
+
+/*
+fun main() {
+
+
+    println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
+
+
+
+    */
+/*val testSub = Subscriptions(
+        alertTypes = arrayListOf("Up"),
         taskIds = arrayListOf("Daily"),
         contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
     )
 
     val testTask = Task(
-        url = "https://www.google.com",
+        url = "https://www.google.com1111",
         httpMethod = "Get",
         timeout = 10000,
         interval = 60,
@@ -87,18 +124,14 @@ fun getHttpTask(url: String): List<Task> {
         agentPools = arrayListOf("westeurope"),
         subscriptions = arrayListOf(testSub)
     )
-
+    println(testTask)
     val test = createHttpTask(testTask)
-    println(test)
+    println(test)*//*
 
 
-    val updTestSub = Subscriptions(
-        alertTypes = arrayListOf("Down"),
-        taskIds = arrayListOf("Daily"),
-        contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
-    )
 
-    println(updateHttpTask(test.copy(url = "1111", subscriptions = arrayListOf(updTestSub))))
+    //println(onPostbackUp(test.url!!))
 
     //println( deleteHttpTask("https://www.google.com") )
-}*/
+}
+*/

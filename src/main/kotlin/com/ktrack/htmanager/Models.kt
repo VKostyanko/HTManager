@@ -16,7 +16,7 @@ data class UserToken(
 data class Subscriptions(
     @SerializedName("alertTypes") var alertTypes: ArrayList<String> = arrayListOf(),
     @SerializedName("taskIds") var taskIds: ArrayList<String> = arrayListOf(),
-    @SerializedName("contactIds") var contactIds: ArrayList<String> = arrayListOf()
+    @SerializedName("contactIds") var contactIds: ArrayList<String> = arrayListOf()   //todo: delete
 )
 
 data class Task(

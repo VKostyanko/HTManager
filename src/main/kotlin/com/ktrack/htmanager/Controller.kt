@@ -1,6 +1,5 @@
 package com.ktrack.htmanager
 
-import org.springframework.boot.jackson.JsonComponent
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,9 +22,8 @@ class Controller {
 
         if (hostTrackerPostback.isUp)
             onPostbackUp(hostTrackerPostback.taskUrl)
-        else{}
-            //todo: onPostbackDown   (disable app)
-
+        else
+            onPostbackDown(hostTrackerPostback.taskUrl)
 
         return hostTrackerPostback.taskUrl
     }
