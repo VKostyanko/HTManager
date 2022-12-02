@@ -50,7 +50,7 @@ fun onPostbackUp(url: String): List<Task> {
         )
     } as ArrayList
 
-    Thread.sleep(600)
+    Thread.sleep(1000)
 
     /*val updatedSubscriptions = Subscriptions(
         alertTypes = arrayListOf("Down"),
