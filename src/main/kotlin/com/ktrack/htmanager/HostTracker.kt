@@ -13,8 +13,8 @@ interface HostTrackerTaskListener {
 
 @Component
 class HostTrackerTaskListenerImpl : HostTrackerTaskListener {
-    override fun onStateChanged(HostTracerTask: HostTrackerTask) {
-        TODO("Not yet implemented")
+    override fun onStateChanged(hostTracerTask: HostTrackerTask) {
+        println(hostTracerTask)
     }
 
 }
