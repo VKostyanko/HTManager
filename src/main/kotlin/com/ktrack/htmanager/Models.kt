@@ -38,7 +38,7 @@ data class Task(
     @JsonProperty("agentStat") var agentStat: Boolean? = null,
     @JsonProperty("billingOverlimits") var billingOverlimits: ArrayList<String> = arrayListOf(),
     @JsonProperty("tags") var tags: ArrayList<String> = arrayListOf(),
-    @JsonProperty("subscriptions") var subscriptions: ArrayList<Subscriptions> = arrayListOf(),
+    @JsonProperty("subscriptions") var subscriptions: ArrayList<Subscriptions>? = arrayListOf(),
     @JsonProperty("agentPools") var agentPools: ArrayList<String> = arrayListOf(),
     @JsonProperty("deleted") var deleted: Boolean? = null,
     @JsonProperty("name") var name: String? = null,

@@ -9,14 +9,15 @@ import retrofit2.http.*
 
 object HostTrackerService {
     val instance by lazy {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        /*val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY*/
+        val interceptor = HostTrackerRequestInterceptor()
         val okHttpClient: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.host-tracker.com/api/web/v1/")
             .addConverterFactory(JacksonConverterFactory.create())
-            //.client(okHttpClient)
+            .client(okHttpClient)
             .build()
 
         retrofit.create(HostTrackerService::class.java)
@@ -35,26 +36,22 @@ object HostTrackerService {
 
         @POST("tasks/http")
         fun createHttpTask(
-            @Header("Authorization") token: String,
             @Body task: Task
         ): Call<Task>
 
         @PUT("tasks")
         fun updateHttpTask(
-            @Header("Authorization") token: String,
             @Query("url") url: String,
             @Body task: Task
         ): Call<List<Task>>
 
         @DELETE("tasks")
         fun deleteHttpTask(
-            @Header("Authorization") token: String,
             @Query("url") url: String
         ): Call<List<Task>>
 
         @GET("tasks")
         fun getHttpTask(
-            @Header("Authorization") token: String,
             @Query("url") url: String
         ): Call<List<Task>>
 
