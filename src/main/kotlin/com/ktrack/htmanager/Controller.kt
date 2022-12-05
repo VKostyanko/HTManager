@@ -21,9 +21,11 @@ class Controller {
         println(hostTrackerPostback)
 
         if (hostTrackerPostback.isUp)
-            onPostbackUp(hostTrackerPostback.taskUrl)
+            println("Up")
+//            onPostbackUp(hostTrackerPostback.taskUrl)
         else
-            onPostbackDown(hostTrackerPostback.taskUrl)
+            println("Down")
+//            onPostbackDown(hostTrackerPostback.taskUrl)
     }
 }
 

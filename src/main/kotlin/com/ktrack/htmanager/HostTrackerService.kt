@@ -16,7 +16,7 @@ object HostTrackerService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.host-tracker.com/api/web/v1/")
             .addConverterFactory(JacksonConverterFactory.create())
-            //.client(okHttpClient)
+//            .client(okHttpClient)
             .build()
 
         retrofit.create(HostTrackerService::class.java)
@@ -39,17 +39,17 @@ object HostTrackerService {
             @Body task: Task
         ): Call<Task>
 
-        @PUT("tasks")
+        @PUT("tasks/http")
         fun updateHttpTask(
             @Header("Authorization") token: String,
-            @Query("url") url: String,
+            @Query("name") appId: String,
             @Body task: Task
         ): Call<List<Task>>
 
         @DELETE("tasks")
         fun deleteHttpTask(
             @Header("Authorization") token: String,
-            @Query("url") url: String
+            @Query("name") appId: String
         ): Call<List<Task>>
 
         @GET("tasks")
