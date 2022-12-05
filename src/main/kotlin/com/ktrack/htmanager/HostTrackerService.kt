@@ -57,7 +57,6 @@ object HostTrackerService {
 
         @GET("tasks")
         fun getHttpTaskByAppId(
-            @Header("Authorization") token: String,
             @Query("name") appId: String
         ): Call<List<Task>>
 

@@ -27,8 +27,6 @@ fun onAppCreate(
     keyword: String,
     waitingFor: WaitingFor
 ): Task {
-    val token = "bearer " + getToken()
-
     val url = if (huawei_id != null) "https://appgallery.huawei.com/app/$huawei_id"
         else "https://play.google.com/store/apps/details?id=$packageName"
 
@@ -65,8 +63,7 @@ fun onAppUpdate(
     huawei_id: String? = null,
     keyword: String? = null,
 ): List<Task> {
-    val token = "bearer " + getToken()
-    var task = HostTrackerService.instance.getHttpTaskByAppId(appId = appId.toString(), token = token)
+    var task = HostTrackerService.instance.getHttpTaskByAppId(appId = appId.toString())
         .execute().body()?.firstOrNull() ?: throw Exception("Same task already exists")
 
     val newAlertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
@@ -107,7 +104,6 @@ fun onAppUpdate(
 fun onAppDelete(
     appId: Long
 ): List<Task> {
-    val token = "bearer " + getToken()
     return HostTrackerService.instance.deleteHttpTask(
         appId = appId.toString()
     ).execute().body()
@@ -149,9 +145,7 @@ fun onAppDelete(
 //}
 
 fun getHttpTaskByUrl(url: String): List<Task> {
-    val token = "bearer " + getToken()
     return HostTrackerService.instance.getHttpTaskByUrl(
-        token = token,
         url = url
     ).execute().body()
         ?: throw Exception("No task with this url")
@@ -175,34 +169,4 @@ fun getHttpTaskByUrl(url: String): List<Task> {
 
 fun main() {
 
-
-    //println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
-        println(
-            onAppUpdate(
-                packageName = "https://github.com/grigoriy322/HostTrackerTest/tree/main",
-                keyword = "kek"
-            )
-        )
-
-//    println(
-//        onAppUpdate(
-//            packageName = "tree/main",
-//            keyword = "HostTrackerTest 2.0",
-//        )
-//    )
-//    val token = "bearer " + getToken()
-//    var task = HostTrackerService.instance.getHttpTaskByAppId(
-//        token = token,
-//        appId = 12.toString()
-//    ).execute().body() ?: throw Exception("No task with this url")
-//    println(task)
-
-
-    //println(onPostbackUp(test.url!!))
-
-//    val result = onAppUpdate(12, waitingFor = WaitingFor.Up, keyword = "2", huawei_id = "123", packageName = "asd")
-//    println(result)
-    println(onAppDelete(12))
-
-    //println( deleteHttpTask("https://www.google.com") )
 }
