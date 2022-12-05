@@ -25,12 +25,12 @@ fun onAppCreate(
     huawei_id: String? = null,
     appId: Long,
     keyword: String,
-    taskStatus: TaskStatus
+    waitingFor: TaskStatus
 ): Task {
     val url = if (huawei_id != null) "https://appgallery.huawei.com/app/$huawei_id"
     else "https://play.google.com/store/apps/details?id=$packageName"
 
-    val alertType = if (taskStatus == TaskStatus.Up) "Up" else "Down"
+    val alertType = if (waitingFor == TaskStatus.Up) "Up" else "Down"
 
     val task = Task(
         url = url,

@@ -32,14 +32,14 @@ class HostTracker @Autowired constructor(
         packageName: String,
         huaweiAppId: String,
         versionName: String,
-        waitingState: TaskStatus = TaskStatus.Up
+        waitingFor: TaskStatus = TaskStatus.Up
     ): Boolean = isSuccess {
         onAppCreate(
             packageName = packageName,
             huawei_id = huaweiAppId,
             keyword = versionName,
             appId = appId,
-            taskStatus = waitingState
+            waitingFor = waitingFor
         )
     }
 
