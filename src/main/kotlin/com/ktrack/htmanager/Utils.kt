@@ -18,8 +18,9 @@ fun getToken(): String = if (
 fun onAppCreate(
     packageName: String,
     huawei_id: String? = null,
+    appId: Long,
     keyword: String,
-    siteName: String
+    waitingFor: WaitingFor
 ): Task {
     val token = "bearer " + getToken()
 
@@ -28,17 +29,19 @@ fun onAppCreate(
 //    else
 //        "https://appgallery.huawei.com/app/$huawei_id"
 
+    val alertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
+
     val task = Task(
         url = url,
         httpMethod = "Get",
         timeout = 10000,
         interval = 1, //todo: utochnit'
         enabled = true,
-        name = siteName,
+        name = appId.toString(),
         agentPools = arrayListOf("westeurope"),
         subscriptions = arrayListOf(
             Subscriptions(
-                alertTypes = arrayListOf("Up"),
+                alertTypes = arrayListOf(alertType),
                 taskIds = arrayListOf("Daily"),
                 contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
             )
@@ -54,30 +57,48 @@ fun onAppCreate(
 }
 
 fun onAppUpdate(
-    packageName: String,
-    keyword: String
+    appId: Long,
+    waitingFor: WaitingFor,
+
+    packageName: String? = null,
+    huawei_id: String? = null,
+    keyword: String? = null,
 ): List<Task> {
     val token = "bearer " + getToken()
+    var task = HostTrackerService.instance.getHttpTaskByAppId(appId = appId.toString(), token = token)
+        .execute().body()?.firstOrNull() ?: throw Exception("Same task already exists")
 
-    val url = //"https://play.google.com/store/apps/details?id=$packageName"
-        "https://github.com/grigoriy322/HostTrackerTest/$packageName"
-    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+    val newAlertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
+
+    val newKeyword = if (keyword.isNullOrEmpty()) {
+        task.keywords
+    } else {
+        arrayListOf(keyword)
+    }
+
+    val newUrl = if (huawei_id.isNullOrEmpty() && packageName.isNullOrEmpty()) {
+        task.url
+    } else {
+        if (huawei_id.isNullOrEmpty()) {
+            "https://play.google.com/store/apps/details?id=$packageName"
+        } else {
+            "Huawei test link"
+        }
+    }
+
 
     Thread.sleep(1000)
 
     task = task.copy(
-        keywords = arrayListOf(keyword),
-
-        //todo: delete
+        url = newUrl,
+        keywords = newKeyword,
         subscriptions = arrayListOf(
             Subscriptions(
-                alertTypes = arrayListOf("Up"),
+                alertTypes = arrayListOf(newAlertType),
                 taskIds = arrayListOf("Daily"),
                 contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
             )
         )
-    //todo: -------
-
     )
 
     println("---------------" + task)
@@ -103,7 +124,7 @@ fun onAppDelete(
 fun onPostbackUp(url: String): List<Task> {
     val token = "bearer " + getToken()
 
-    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+    var task = getHttpTaskByUrl(url = url).firstOrNull() ?: throw Exception("No task with this url")
     val subscriptions = HostTrackerService.instance
         .getHttpTaskSubscriptions(token = token, taskId = task.id!!)
         .execute()
@@ -134,9 +155,9 @@ fun onPostbackUp(url: String): List<Task> {
     ).execute().body() ?: throw Exception("No task with this url")
 }
 
-fun getHttpTask(url: String): List<Task> {
+fun getHttpTaskByUrl(url: String): List<Task> {
     val token = "bearer " + getToken()
-    return HostTrackerService.instance.getHttpTask(
+    return HostTrackerService.instance.getHttpTaskByUrl(
         token = token,
         url = url
     ).execute().body()
@@ -146,7 +167,7 @@ fun getHttpTask(url: String): List<Task> {
 fun onPostbackDown(url: String): List<Task> {
     val token = "bearer " + getToken()
 
-    var task = getHttpTask(url = url).firstOrNull() ?: throw Exception("No task with this url")
+    var task = getHttpTaskByUrl(url = url).firstOrNull() ?: throw Exception("No task with this url")
 
     task = task.copy(enabled = false, name = "DISABLED " + task.name)
 
@@ -173,15 +194,23 @@ fun main() {
 
     //println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
 
-    println(
-        onAppUpdate(
-            packageName = "tree/main",
-            keyword = "HostTrackerTest 2.0",
-        )
-    )
-
-
+//    println(
+//        onAppUpdate(
+//            packageName = "tree/main",
+//            keyword = "HostTrackerTest 2.0",
+//        )
+//    )
+//    val token = "bearer " + getToken()
+//    var task = HostTrackerService.instance.getHttpTaskByAppId(
+//        token = token,
+//        appId = 12.toString()
+//    ).execute().body() ?: throw Exception("No task with this url")
+//    println(task)
     //println(onPostbackUp(test.url!!))
 
+//    val result = onAppUpdate(12, waitingFor = WaitingFor.Down, keyword = "2", packageName = "123a")
+//    println(result)
+
+    println(getHttpTaskByUrl("https://play.google.com/store/apps/details?id=asdw"))
     //println( deleteHttpTask("https://www.google.com") )
 }

@@ -53,9 +53,15 @@ object HostTrackerService {
         ): Call<List<Task>>
 
         @GET("tasks")
-        fun getHttpTask(
+        fun getHttpTaskByUrl(
             @Header("Authorization") token: String,
             @Query("url") url: String
+        ): Call<List<Task>>
+
+        @GET("tasks")
+        fun getHttpTaskByAppId(
+            @Header("Authorization") token: String,
+            @Query("name") appId: String
         ): Call<List<Task>>
 
         @GET("subscriptions")
