@@ -63,9 +63,8 @@ fun onAppUpdate(
     huawei_id: String? = null,
     keyword: String? = null,
 ): List<Task> {
-    var task = HostTrackerService.instance
-        .getHttpTaskByAppId(appId = appId.toString()).execute().body()?.firstOrNull()
-        ?: throw Exception("Same task already exists")
+    var task = HostTrackerService.instance.getHttpTaskByAppId(appId = appId.toString())
+        .execute().body()?.firstOrNull() ?: throw Exception("Same task already exists")
 
     val newAlertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
 
@@ -104,10 +103,10 @@ fun onAppUpdate(
 
 fun onAppDelete(
     appId: Long
-): List<Task> {
-    return HostTrackerService.instance
-        .deleteHttpTask(appId = appId.toString()).execute().body() ?: throw Exception("No task with this url")
-}
+): List<Task> = HostTrackerService.instance.deleteHttpTask(
+        appId = appId.toString()
+    ).execute().body()
+        ?: throw Exception("No task with this url")
 
 //fun onPostbackUp(url: String): List<Task> {
 //
