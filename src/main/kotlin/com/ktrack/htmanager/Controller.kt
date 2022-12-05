@@ -34,5 +34,6 @@ class Controller @Autowired constructor(
 
 data class HostTrackerPostback(
     @JsonProperty("internal_app_id") val internalAppId: String,
-    @JsonProperty("is_up") val isUp: Boolean
+    @JsonProperty("is_up") val isUp: Boolean,
+    @JsonProperty("internal_error") val internalError:String
 )

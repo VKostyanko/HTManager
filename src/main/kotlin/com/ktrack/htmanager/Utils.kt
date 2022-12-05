@@ -25,7 +25,7 @@ fun onAppCreate(
     huawei_id: String? = null,
     appId: Long,
     keyword: String,
-    waitingFor: TaskStatus
+    waitingFor: TaskStatus = TaskStatus.Up
 ): Task {
     val url = if (huawei_id != null) "https://appgallery.huawei.com/app/$huawei_id"
     else "https://play.google.com/store/apps/details?id=$packageName"
@@ -162,29 +162,10 @@ fun isSuccess(foo: () -> Unit): Boolean = try {
     false
 }
 
-//fun main() {
-//
-//
-//    //println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
-//
-////    println(
-////        onAppUpdate(
-////            packageName = "tree/main",
-////            keyword = "HostTrackerTest 2.0",
-////        )
-////    )
-////    var task = HostTrackerService.instance.getHttpTaskByAppId(
-////        token = token,
-////        appId = 12.toString()
-////    ).execute().body() ?: throw Exception("No task with this url")
-////    println(task)
-//
-//
-//    //println(onPostbackUp(test.url!!))
-//
-////    val result = onAppUpdate(12, waitingFor = WaitingFor.Up, keyword = "2", huawei_id = "123", packageName = "asd")
-////    println(result)
-//    println(onAppDelete(12))
-//
-//    //println( deleteHttpTask("https://www.google.com") )
-//}
+
+
+fun main() {
+    println(
+        onAppCreate("45678ijnbvfgt", appId = 123, keyword = "nejigo;w'fkmpasl;vbp[aa]oknidvxk;m")
+    )
+}
