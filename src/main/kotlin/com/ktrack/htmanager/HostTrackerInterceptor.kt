@@ -4,7 +4,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class HostTrackerRequestInterceptor : Interceptor {
+class HostTrackerInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return if (chain.request().url == "https://www.host-tracker.com/api/web/v1/users/token".toHttpUrl()) {
             val request = chain.request()

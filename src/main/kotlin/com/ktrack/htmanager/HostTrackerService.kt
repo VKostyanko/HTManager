@@ -1,7 +1,6 @@
 package com.ktrack.htmanager
 
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -11,7 +10,7 @@ object HostTrackerService {
     val instance by lazy {
         /*val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY*/
-        val interceptor = HostTrackerRequestInterceptor()
+        val interceptor = HostTrackerInterceptor()
         val okHttpClient: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
         val retrofit = Retrofit.Builder()
@@ -57,13 +56,11 @@ object HostTrackerService {
 
         @GET("tasks")
         fun getHttpTaskByAppId(
-            @Header("Authorization") token: String,
             @Query("name") appId: String
         ): Call<List<Task>>
 
         @GET("subscriptions")
         fun getHttpTaskSubscriptions(//todo: delete with Models.Subscriptions
-            @Header("Authorization") token: String,
             @Query("taskId") taskId: String
         ): Call<List<Subscriptions>>
     }
