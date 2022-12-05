@@ -164,8 +164,8 @@ fun isSuccess(foo: () -> Unit): Boolean = try {
 
 
 
-fun main() {
-    println(
-        onAppCreate("45678ijnbvfgt", appId = 123, keyword = "nejigo;w'fkmpasl;vbp[aa]oknidvxk;m")
-    )
-}
+//fun main() {
+//    println(
+//        onAppCreate("45678ijnbvfgt", appId = 123, keyword = "nejigo;w'fkmpasl;vbp[aa]oknidvxk;m")
+//    )
+//}
