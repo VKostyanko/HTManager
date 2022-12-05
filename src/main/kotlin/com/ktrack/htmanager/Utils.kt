@@ -1,5 +1,7 @@
 package com.ktrack.htmanager
 
+
+
 fun getToken(): String = if (
     TokenHolder.token.isEmpty() ||
     TokenHolder.expirationUnixTime * 1000 < System.currentTimeMillis()
@@ -174,9 +176,8 @@ fun main() {
     //println(onPostbackDown("https://github.com/grigoriy322/HostTrackerTest/tree/main"))
 
     println(
-        onAppUpdate(
-            packageName = "tree/main",
-            keyword = "HostTrackerTest 2.0",
+        getHttpTask(
+            url = "https://github.com/grigoriy322/HostTrackerTest/tree/main"
         )
     )
 
