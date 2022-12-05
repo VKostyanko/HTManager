@@ -39,20 +39,26 @@ object HostTrackerService {
             @Body task: Task
         ): Call<Task>
 
-        @PUT("tasks")
+        @PUT("tasks/http")
         fun updateHttpTask(
-            @Query("url") url: String,
+            @Query("name") appId: String,
             @Body task: Task
         ): Call<List<Task>>
 
         @DELETE("tasks")
         fun deleteHttpTask(
+            @Query("name") appId: String
+        ): Call<List<Task>>
+
+        @GET("tasks")
+        fun getHttpTaskByUrl(
             @Query("url") url: String
         ): Call<List<Task>>
 
         @GET("tasks")
-        fun getHttpTask(
-            @Query("url") url: String
+        fun getHttpTaskByAppId(
+            @Header("Authorization") token: String,
+            @Query("name") appId: String
         ): Call<List<Task>>
 
         @GET("subscriptions")
