@@ -12,7 +12,7 @@ class HostTrackerInterceptor : Interceptor {
 
             if (response.code == 429) {
                 response.close()
-                Thread.sleep(1000)
+                Thread.sleep(1100)
                 chain.proceed(request)
             } else response
 
@@ -29,7 +29,7 @@ class HostTrackerInterceptor : Interceptor {
                  * */
                 response.code == 429 -> {
                     response.close()
-                    Thread.sleep(1000)
+                    Thread.sleep(1100)
                     chain.proceed(request)
                 }
 
@@ -38,11 +38,12 @@ class HostTrackerInterceptor : Interceptor {
                  * */
                 response.isSuccessful.not() -> {
                     response.close()
-                    Thread.sleep(1000)
-                    request.newBuilder()
+                    val requestWithNewToken = request.newBuilder()
                         .header("Authorization", "bearer " + getToken(forcibly = true))
                         .build()
-                    chain.proceed(request)
+
+                    Thread.sleep(1100)
+                    chain.proceed(requestWithNewToken)
                 }
 
                 else -> response
