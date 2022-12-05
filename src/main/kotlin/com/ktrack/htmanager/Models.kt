@@ -1,6 +1,6 @@
 package com.ktrack.htmanager
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 
 data class UserCredentials(
     val login: String,
@@ -8,50 +8,50 @@ data class UserCredentials(
 )
 
 data class UserToken(
-    @SerializedName("ticket") val token: String,
-    @SerializedName("expirationTime") val expirationTime: String,
-    @SerializedName("expirationUnixTime") val expirationUnixTime: Long,
+    @JsonProperty("ticket") val token: String,
+    @JsonProperty("expirationTime") val expirationTime: String,
+    @JsonProperty("expirationUnixTime") val expirationUnixTime: Long,
 )
 
 data class Subscriptions(
-    @SerializedName("alertTypes") var alertTypes: ArrayList<String> = arrayListOf(),
-    @SerializedName("taskIds") var taskIds: ArrayList<String> = arrayListOf(),
-    @SerializedName("contactIds") var contactIds: ArrayList<String> = arrayListOf()   //todo: delete
+    @JsonProperty("alertTypes") var alertTypes: ArrayList<String> = arrayListOf(),
+    @JsonProperty("taskIds") var taskIds: ArrayList<String> = arrayListOf(),
+    @JsonProperty("contactIds") var contactIds: ArrayList<String> = arrayListOf()   //todo: delete
 )
 
 data class Task(
-    @SerializedName("id") var id: String? = null,
-    @SerializedName("url") var url: String? = null,
-    @SerializedName("checkDnsbl") var checkDnsbl: Boolean? = null,
-    @SerializedName("rawUrl") var rawUrl: String? = null,
-    @SerializedName("creationTime") var creationTime: String? = null,
-    @SerializedName("taskType") var taskType: String? = null,
-    @SerializedName("enabled") var enabled: Boolean? = null,
-    @SerializedName("interval") var interval: Int? = null,
-    @SerializedName("intervalSec") var intervalSec: Int? = null,
-    @SerializedName("upFromTime") var upFromTime: String? = null,
-    @SerializedName("lastState") var lastState: Boolean? = null,
-    @SerializedName("lastStateChangeTime") var lastStateChangeTime: String? = null,
-    @SerializedName("openStatEnabled") var openStatEnabled: Boolean? = null,
-    @SerializedName("fullLogEnabled") var fullLogEnabled: Boolean? = null,
-    @SerializedName("holdResults") var holdResults: Boolean? = null,
-    @SerializedName("agentStat") var agentStat: Boolean? = null,
-    @SerializedName("billingOverlimits") var billingOverlimits: ArrayList<String> = arrayListOf(),
-    @SerializedName("tags") var tags: ArrayList<String> = arrayListOf(),
-    @SerializedName("subscriptions") var subscriptions: ArrayList<Subscriptions> = arrayListOf(),
-    @SerializedName("agentPools") var agentPools: ArrayList<String> = arrayListOf(),
-    @SerializedName("deleted") var deleted: Boolean? = null,
-    @SerializedName("name") var name: String? = null,
-    @SerializedName("httpMethod") var httpMethod: String? = null,
-    @SerializedName("keywords") var keywords: ArrayList<String> = arrayListOf(),
-    @SerializedName("keywordMode") var keywordMode: String? = null,
-    @SerializedName("maxResponsePageSize") var maxResponsePageSize: Int? = null,
-    @SerializedName("timeout") var timeout: Int? = null,
-    @SerializedName("httpHeaders") var httpHeaders: String? = null,
-    @SerializedName("followRedirect") var followRedirect: Boolean? = null,
-    @SerializedName("treat300AsError") var treat300AsError: Boolean? = null,
-    @SerializedName("checkCertificateExpiration") var checkCertificateExpiration: Boolean? = null,
-    @SerializedName("checkRussianBlackLists") var checkRussianBlackLists: Boolean? = null,
-    @SerializedName("checkDomainExpiration") var checkDomainExpiration: Boolean? = null,
-    @SerializedName("ignoredStatuses") var ignoredStatuses: ArrayList<String> = arrayListOf()
+    @JsonProperty("id") var id: String? = null,
+    @JsonProperty("url") var url: String? = null,
+    @JsonProperty("checkDnsbl") var checkDnsbl: Boolean? = null,
+    @JsonProperty("rawUrl") var rawUrl: String? = null,
+    @JsonProperty("creationTime") var creationTime: String? = null,
+    @JsonProperty("taskType") var taskType: String? = null,
+    @JsonProperty("enabled") var enabled: Boolean? = null,
+    @JsonProperty("interval") var interval: Int? = null,
+    @JsonProperty("intervalSec") var intervalSec: Int? = null,
+    @JsonProperty("upFromTime") var upFromTime: String? = null,
+    @JsonProperty("lastState") var lastState: Boolean? = null,
+    @JsonProperty("lastStateChangeTime") var lastStateChangeTime: String? = null,
+    @JsonProperty("openStatEnabled") var openStatEnabled: Boolean? = null,
+    @JsonProperty("fullLogEnabled") var fullLogEnabled: Boolean? = null,
+    @JsonProperty("holdResults") var holdResults: Boolean? = null,
+    @JsonProperty("agentStat") var agentStat: Boolean? = null,
+    @JsonProperty("billingOverlimits") var billingOverlimits: ArrayList<String> = arrayListOf(),
+    @JsonProperty("tags") var tags: ArrayList<String> = arrayListOf(),
+    @JsonProperty("subscriptions") var subscriptions: ArrayList<Subscriptions> = arrayListOf(),
+    @JsonProperty("agentPools") var agentPools: ArrayList<String> = arrayListOf(),
+    @JsonProperty("deleted") var deleted: Boolean? = null,
+    @JsonProperty("name") var name: String? = null,
+    @JsonProperty("httpMethod") var httpMethod: String? = null,
+    @JsonProperty("keywords") var keywords: ArrayList<String> = arrayListOf(),
+    @JsonProperty("keywordMode") var keywordMode: String? = null,
+    @JsonProperty("maxResponsePageSize") var maxResponsePageSize: Int? = null,
+    @JsonProperty("timeout") var timeout: Int? = null,
+    @JsonProperty("httpHeaders") var httpHeaders: String? = null,
+    @JsonProperty("followRedirect") var followRedirect: Boolean? = null,
+    @JsonProperty("treat300AsError") var treat300AsError: Boolean? = null,
+    @JsonProperty("checkCertificateExpiration") var checkCertificateExpiration: Boolean? = null,
+    @JsonProperty("checkRussianBlackLists") var checkRussianBlackLists: Boolean? = null,
+    @JsonProperty("checkDomainExpiration") var checkDomainExpiration: Boolean? = null,
+    @JsonProperty("ignoredStatuses") var ignoredStatuses: ArrayList<String> = arrayListOf()
 )

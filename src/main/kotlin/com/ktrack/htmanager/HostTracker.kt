@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 interface TrackerTaskListener {
     /**
-     * Я буду сохранять всё шо сюда прииходит в свою базу и связывать жто с
+     * Я буду сохранять всё шо сюда прииходит в свою базу и связывать это с
      * Приложением - шоб можно было смотреть логи
      */
     fun onStateChanged(/*todo state internalAppID & UP or DOWN status*/)

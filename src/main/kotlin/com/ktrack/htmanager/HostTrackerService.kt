@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.*
 
 object HostTrackerService {
@@ -15,7 +15,7 @@ object HostTrackerService {
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.host-tracker.com/api/web/v1/")
-            .addConverterFactory(GsonConverterFactory.create()) //todo: replace to jackson converter
+            .addConverterFactory(JacksonConverterFactory.create())
             //.client(okHttpClient)
             .build()
 
