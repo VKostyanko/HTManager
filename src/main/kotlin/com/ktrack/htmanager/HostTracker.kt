@@ -3,44 +3,66 @@ package com.ktrack.htmanager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-interface TrackerTaskListener {
+interface HostTrackerTaskListener {
     /**
      * Я буду сохранять всё шо сюда прииходит в свою базу и связывать это с
      * Приложением - шоб можно было смотреть логи
      */
-    fun onStateChanged(/*todo state internalAppID & UP or DOWN status*/)
+    fun onStateChanged(HostTracerTask: HostTrackerTask )
 }
 
 @Component
-class TrackerTaskListenerImpl : TrackerTaskListener {
-    override fun onStateChanged() {
-
+class HostTrackerTaskListenerImpl : HostTrackerTaskListener {
+    override fun onStateChanged(HostTracerTask: HostTrackerTask) {
+        TODO("Not yet implemented")
     }
 
 }
 
 @Component
 class HostTracker @Autowired constructor(
-    val TrackerTaskListener: TrackerTaskListener
+    val HostTrackerTaskListener: HostTrackerTaskListener
 ) {
 
-    //getTasksList
+    //TODO getTasksList
     //CRUD task (in update "watch up" or switch "watch down")
+    //TODO update disable
     fun createTask(
         appId: Long,
         packageName: String,
         huaweiAppId: String,
         versionName: String,
-        waitingState: WaitingFor = WaitingFor.Up
-        ) {
+        waitingState: TaskStatus = TaskStatus.Up
+    ): Boolean = isSuccess {
         onAppCreate(
             packageName = packageName,
             huawei_id = huaweiAppId,
             keyword = versionName,
             appId = appId,
-            waitingFor = waitingState
+            taskStatus = waitingState
         )
     }
+
+
+    fun getTaskByAppId(appId: Long) = getHttpTaskByAppId(appId)
+
+
+    fun updateTask(
+        appId: Long,
+        waitingFor: TaskStatus,
+
+        packageName: String? = null,
+        huawei_id: String? = null,
+        keyword: String? = null,
+    ) = isSuccess {
+        onAppUpdate(appId, waitingFor, packageName, huawei_id, keyword)
+    }
+
+    fun deleteTask(appId: Long) = isSuccess {
+        onAppDelete(appId)
+    }
+
+
 
 
 //    data class Task(
@@ -54,13 +76,11 @@ class HostTracker @Autowired constructor(
 
 }
 
-data class HostTracerTask(
+data class HostTrackerTask(
     val internalId: Long,
-    val packageName: String,
-    val huaweiAppId: String,
-    val waitingState: WaitingFor
+    val taskStatus: TaskStatus
 )
 
-enum class WaitingFor {
+enum class TaskStatus {
     Down, Up
 }

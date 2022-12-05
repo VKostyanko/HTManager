@@ -25,12 +25,12 @@ fun onAppCreate(
     huawei_id: String? = null,
     appId: Long,
     keyword: String,
-    waitingFor: WaitingFor
+    taskStatus: TaskStatus
 ): Task {
     val url = if (huawei_id != null) "https://appgallery.huawei.com/app/$huawei_id"
-        else "https://play.google.com/store/apps/details?id=$packageName"
+    else "https://play.google.com/store/apps/details?id=$packageName"
 
-    val alertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
+    val alertType = if (taskStatus == TaskStatus.Up) "Up" else "Down"
 
     val task = Task(
         url = url,
@@ -57,16 +57,16 @@ fun onAppCreate(
 
 fun onAppUpdate(
     appId: Long,
-    waitingFor: WaitingFor,
+    waitingFor: TaskStatus,
 
     packageName: String? = null,
     huawei_id: String? = null,
     keyword: String? = null,
-): List<Task> {
+): Task {
     var task = HostTrackerService.instance.getHttpTaskByAppId(appId = appId.toString())
         .execute().body()?.firstOrNull() ?: throw Exception("Same task already exists")
 
-    val newAlertType = if (waitingFor == WaitingFor.Up) "Up" else "Down"
+    val newAlertType = if (waitingFor == TaskStatus.Up) "Up" else "Down"
 
     val newKeyword = if (keyword.isNullOrEmpty()) {
         task.keywords
@@ -74,12 +74,11 @@ fun onAppUpdate(
         arrayListOf(keyword)
     }
 
-    val newUrl = when{
+    val newUrl = when {
         huawei_id != null -> "https://appgallery.huawei.com/app/$huawei_id"
-        packageName != null ->  "https://play.google.com/store/apps/details?id=$packageName"
+        packageName != null -> "https://play.google.com/store/apps/details?id=$packageName"
         else -> task.url
     }
-
 
     task = task.copy(
         url = newUrl,
@@ -93,20 +92,18 @@ fun onAppUpdate(
         )
     )
 
-    println("---------------" + task)
-
     return HostTrackerService.instance.updateHttpTask(
         appId = appId.toString(),
         task = task
-    ).execute().body() ?: throw Exception("No task with this url")
+    ).execute().body()?.first() ?: throw Exception("No task with this url")
 }
 
 fun onAppDelete(
     appId: Long
 ): List<Task> = HostTrackerService.instance.deleteHttpTask(
-        appId = appId.toString()
-    ).execute().body()
-        ?: throw Exception("No task with this url")
+    appId = appId.toString()
+).execute().body()
+    ?: throw Exception("No task with this url")
 
 //fun onPostbackUp(url: String): List<Task> {
 //
@@ -141,8 +138,8 @@ fun onAppDelete(
 //    ).execute().body() ?: throw Exception("No task with this url")
 //}
 
-fun getHttpTaskByUrl(url: String): List<Task> = HostTrackerService.instance
-        .getHttpTaskByUrl(url = url).execute().body() ?: throw Exception("No task with this url")
+fun getHttpTaskByAppId(appId: Long): Task = HostTrackerService.instance
+    .getHttpTaskByAppId(appId = appId.toString()).execute().body()?.first() ?: throw Exception("No task with this id")
 
 //fun onPostbackDown(url: String): List<Task> {
 //    var task = getHttpTaskByUrl(url = url).firstOrNull() ?: throw Exception("No task with this url")
@@ -157,6 +154,13 @@ fun getHttpTaskByUrl(url: String): List<Task> = HostTrackerService.instance
 //        task = task
 //    ).execute().body() ?: throw Exception("No task with this url")
 //}
+
+fun isSuccess(foo: () -> Unit): Boolean = try {
+    foo()
+    true
+} catch (e: Exception) {
+    false
+}
 
 fun main() {
 
