@@ -1,5 +1,7 @@
 package com.ktrack.htmanager
 
+import com.sun.org.apache.xpath.internal.operations.Bool
+
 
 fun getToken(
     forcibly: Boolean = false
@@ -62,6 +64,7 @@ fun onAppUpdate(
     packageName: String? = null,
     huawei_id: String? = null,
     keyword: String? = null,
+    enable: Boolean? = null,
 ): Task {
     var task = HostTrackerService.instance.getHttpTask(appId = appId.toString())
         .execute().body()?.firstOrNull() ?: throw Exception("Same task already exists")
@@ -80,6 +83,8 @@ fun onAppUpdate(
         else -> task.url
     }
 
+    val newEnabled = enable ?: task.enabled
+
     task = task.copy(
         url = newUrl,
         keywords = newKeyword,
@@ -89,7 +94,8 @@ fun onAppUpdate(
                 taskIds = arrayListOf("Daily"),
                 contactIds = arrayListOf("f04e569f-945d-ec11-93f7-00155d45084f", "6847a325-e56f-ed11-9e59-00155d455476")
             )
-        )
+        ),
+        enabled = newEnabled
     )
 
     return HostTrackerService.instance.updateHttpTask(
@@ -141,6 +147,10 @@ fun onAppDelete(
 fun getHttpTask(appId: Long): Task = HostTrackerService.instance
     .getHttpTask(appId = appId.toString()).execute().body()?.first() ?: throw Exception("No task with this id")
 
+
+fun getHttpTasksList(): List<Task> = HostTrackerService.instance
+    .getHttpTasksList().execute().body() ?: throw Exception("Exception")
+
 //fun onPostbackDown(url: String): List<Task> {
 //    var task = getHttpTaskByUrl(url = url).firstOrNull() ?: throw Exception("No task with this url")
 //
@@ -164,8 +174,9 @@ fun isSuccess(foo: () -> Unit): Boolean = try {
 
 
 
-//fun main() {
-//    println(
-//        onAppCreate("45678ijnbvfgt", appId = 123, keyword = "nejigo;w'fkmpasl;vbp[aa]oknidvxk;m")
-//    )
-//}
+/*
+fun main() {
+    println(
+        getHttpTasksList()
+    )
+}*/

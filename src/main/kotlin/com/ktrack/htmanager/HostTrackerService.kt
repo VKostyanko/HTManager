@@ -57,6 +57,9 @@ object HostTrackerService {
         fun getHttpTaskSubscriptions(//todo: delete with Models.Subscriptions
             @Query("taskId") taskId: String
         ): Call<List<Subscriptions>>
+
+        @GET("tasks")
+        fun getHttpTasksList(): Call<List<Task>>
     }
 }
 

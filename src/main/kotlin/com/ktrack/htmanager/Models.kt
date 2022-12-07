@@ -14,9 +14,9 @@ data class UserToken(
 )
 
 data class Subscriptions(
-    @JsonProperty("alertTypes") var alertTypes: ArrayList<String> = arrayListOf(),
-    @JsonProperty("taskIds") var taskIds: ArrayList<String> = arrayListOf(),
-    @JsonProperty("contactIds") var contactIds: ArrayList<String> = arrayListOf()   //todo: delete
+    @JsonProperty("alertTypes") var alertTypes: ArrayList<String>? = arrayListOf(),
+    @JsonProperty("taskIds") var taskIds: ArrayList<String>? = arrayListOf(),
+    @JsonProperty("contactIds") var contactIds: ArrayList<String>? = arrayListOf()   //todo: delete
 )
 
 data class Task(
@@ -36,14 +36,14 @@ data class Task(
     @JsonProperty("fullLogEnabled") var fullLogEnabled: Boolean? = null,
     @JsonProperty("holdResults") var holdResults: Boolean? = null,
     @JsonProperty("agentStat") var agentStat: Boolean? = null,
-    @JsonProperty("billingOverlimits") var billingOverlimits: ArrayList<String> = arrayListOf(),
-    @JsonProperty("tags") var tags: ArrayList<String> = arrayListOf(),
+    @JsonProperty("billingOverlimits") var billingOverlimits: ArrayList<String>? = arrayListOf(),
+    @JsonProperty("tags") var tags: ArrayList<String>? = arrayListOf(),
     @JsonProperty("subscriptions") var subscriptions: ArrayList<Subscriptions>? = arrayListOf(),
-    @JsonProperty("agentPools") var agentPools: ArrayList<String> = arrayListOf(),
+    @JsonProperty("agentPools") var agentPools: ArrayList<String>? = arrayListOf(),
     @JsonProperty("deleted") var deleted: Boolean? = null,
     @JsonProperty("name") var name: String? = null,
     @JsonProperty("httpMethod") var httpMethod: String? = null,
-    @JsonProperty("keywords") var keywords: ArrayList<String> = arrayListOf(),
+    @JsonProperty("keywords") var keywords: ArrayList<String>? = arrayListOf(),
     @JsonProperty("keywordMode") var keywordMode: String? = null,
     @JsonProperty("maxResponsePageSize") var maxResponsePageSize: Int? = null,
     @JsonProperty("timeout") var timeout: Int? = null,
@@ -53,5 +53,5 @@ data class Task(
     @JsonProperty("checkCertificateExpiration") var checkCertificateExpiration: Boolean? = null,
     @JsonProperty("checkRussianBlackLists") var checkRussianBlackLists: Boolean? = null,
     @JsonProperty("checkDomainExpiration") var checkDomainExpiration: Boolean? = null,
-    @JsonProperty("ignoredStatuses") var ignoredStatuses: ArrayList<String> = arrayListOf()
+    @JsonProperty("ignoredStatuses") var ignoredStatuses: ArrayList<String>? = arrayListOf()
 )

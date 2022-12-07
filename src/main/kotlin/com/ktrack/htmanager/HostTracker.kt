@@ -2,6 +2,7 @@ package com.ktrack.htmanager
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import kotlin.jvm.Throws
 
 interface HostTrackerTaskListener {
     /**
@@ -23,10 +24,6 @@ class HostTrackerTaskListenerImpl : HostTrackerTaskListener {
 class HostTracker @Autowired constructor(
     val hostTrackerTaskListener: HostTrackerTaskListener
 ) {
-
-    //TODO getTasksList
-    //CRUD task (in update "watch up" or switch "watch down")
-    //TODO update disable
     fun createTask(
         appId: Long,
         packageName: String,
@@ -43,8 +40,8 @@ class HostTracker @Autowired constructor(
         )
     }
 
-
-    fun getTaskByAppId(appId: Long) = getHttpTask(appId)
+    @Throws(Exception::class)
+    fun getTask(appId: Long) = getHttpTask(appId)
 
 
     fun updateTask(
@@ -54,26 +51,17 @@ class HostTracker @Autowired constructor(
         packageName: String? = null,
         huawei_id: String? = null,
         keyword: String? = null,
+        enable: Boolean? = null
     ) = isSuccess {
-        onAppUpdate(appId, waitingFor, packageName, huawei_id, keyword)
+        onAppUpdate(appId, waitingFor, packageName, huawei_id, keyword, enable)
     }
 
     fun deleteTask(appId: Long) = isSuccess {
         onAppDelete(appId)
     }
 
-
-
-
-//    data class Task(
-//      internalId
-//      packageNme
-//      huaeiAppId
-    //  lookingFor -> UP/DOWN
-//    )
-
-    //fun createTask(Task): Bool -> isSuccess
-
+    @Throws(Exception::class)
+    fun getTasksList() = getHttpTasksList()
 }
 
 data class HostTrackerTask(
