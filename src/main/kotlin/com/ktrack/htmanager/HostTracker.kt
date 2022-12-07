@@ -8,7 +8,7 @@ interface HostTrackerTaskListener {
      * Я буду сохранять всё шо сюда прииходит в свою базу и связывать это с
      * Приложением - шоб можно было смотреть логи
      */
-    fun onStateChanged(HostTracerTask: HostTrackerTask )
+    fun onStateChanged(hostTracerTask: HostTrackerTask )
 }
 
 @Component
@@ -21,7 +21,7 @@ class HostTrackerTaskListenerImpl : HostTrackerTaskListener {
 
 @Component
 class HostTracker @Autowired constructor(
-    val HostTrackerTaskListener: HostTrackerTaskListener
+    val hostTrackerTaskListener: HostTrackerTaskListener
 ) {
 
     //TODO getTasksList
@@ -44,7 +44,7 @@ class HostTracker @Autowired constructor(
     }
 
 
-    fun getTaskByAppId(appId: Long) = getHttpTaskByAppId(appId)
+    fun getTaskByAppId(appId: Long) = getHttpTask(appId)
 
 
     fun updateTask(

@@ -24,7 +24,6 @@ object HostTrackerService {
 
     interface HostTrackerService {
 
-        //todo getToken() in interceptor after error
         @POST("users/token")
         fun getToken(
             @Body userCredentials: UserCredentials = UserCredentials(
@@ -50,12 +49,7 @@ object HostTrackerService {
         ): Call<List<Task>>
 
         @GET("tasks")
-        fun getHttpTaskByUrl(
-            @Query("url") url: String
-        ): Call<List<Task>>
-
-        @GET("tasks")
-        fun getHttpTaskByAppId(
+        fun getHttpTask(
             @Query("name") appId: String
         ): Call<List<Task>>
 
